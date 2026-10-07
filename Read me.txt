@@ -1,0 +1,25 @@
+# Freight Rate Prediction Assessment
+
+This repository contains the machine learning pipeline and deliverables for the Freight Rate Prediction assessment. The objective is to forecast spot freight rates based on historical data using robust validation strategies to prevent temporal data leakage.
+
+## Repository Structure
+
+* `data/` - Directory containing the input CSV files (must be added locally to run).
+* `requirements.txt` - Python dependencies required to run the pipeline and scorer.
+* `score.py` - The provided evaluation harness.
+* `validation_predictions.csv` - The final model predictions for the 12,000 validation loads.
+* `candidate_december.png` - The output chart demonstrating daily price fluctuations.
+* `your_notebook_name.ipynb` - The core ML pipeline (data preprocessing, training, and inference).
+
+## Methodology Highlights
+
+1. **Chronological Splitting:** Standard random splitting causes target leakage in time-series pricing data. The dataset was sorted chronologically, training on the earliest 80% and validating on the most recent 20% to simulate a production environment.
+2. **Preventing Route Overfitting:** Initial testing revealed that one-hot encoding specific pickup/delivery cities caused the model to overfit sparse routes, resulting in flat-line predictions for the December evaluation. By generalizing spatial features to `distance` and `weight` and extracting granular temporal features (`day_of_week`, `day_of_month`), the Random Forest Regressor successfully learned day-to-day rate fluctuations.
+
+## Setup and Installation
+
+1. Clone this repository.
+2. Ensure you have Python 3.9+ installed.
+3. Install the required dependencies:
+   ```bash
+   pip install -r requirements.txt
